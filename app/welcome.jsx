@@ -1,10 +1,14 @@
 import React from "react";
-import { View, Text, StyleSheet, Image } from "react-native";
+import { View, Text, StyleSheet, Image, Pressable } from "react-native";
 import ScreenWrapper from "../components/ScreenWrapper";
 import { StatusBar } from "expo-status-bar";
 import { wp, hp } from "../helper/common";
+import Button from "../components/Button"; // Ensure Button component is imported
+import { useRouter } from "expo-router";
 
 const Welcome = () => {
+  const router = useRouter();
+
   return (
     <ScreenWrapper bg="white">
       <StatusBar style="dark" />
@@ -20,6 +24,17 @@ const Welcome = () => {
         <View style={styles.textContainer}>
           <Text style={styles.title}>Kreos</Text>
           <Text style={styles.punchline}>Chill maar!!</Text>
+        </View>
+      </View>
+
+      {/* Footer with Button */}
+      <View style={styles.footer}>
+        <Button title="Getting Started" onPress={() => router.push("signUp")} />
+        <View style={styles.bottomTextContainer}>
+          <Text style={styles.loginText}>Already have an account!</Text>
+          <Pressable onPress={() => router.push("login")}>
+            <Text style={[styles.loginText, { color: "green" }]}> Login</Text>
+          </Pressable>
         </View>
       </View>
     </ScreenWrapper>
@@ -45,7 +60,6 @@ const styles = StyleSheet.create({
   textContainer: {
     alignItems: "center",
     paddingHorizontal: wp(5),
-    textAlign: "center",
   },
   title: {
     fontSize: 40,
@@ -62,5 +76,24 @@ const styles = StyleSheet.create({
     fontWeight: "500",
     textAlign: "center",
     maxWidth: wp(90),
+  },
+  footer: {
+    gap: 10,
+    position: "absolute", // Positions footer over the content
+    bottom: 0, // Anchors the footer to the bottom of the screen
+    width: "100%", // Ensures the footer takes up the full width
+    paddingBottom: hp(10),
+    alignItems: "center", // Center button horizontally
+    backgroundColor: "#f5f5f5", // Set background to white if required
+    paddingHorizontal: wp(5),
+  },
+  bottomTextContainer: {
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  loginText: {
+    textAlign: "center",
+    alignItems: "center",
   },
 });
