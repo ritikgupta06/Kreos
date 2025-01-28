@@ -9,6 +9,7 @@ import { hp, wp } from "../helper/common";
 
 import Input from "../components/input";
 import Button from "../components/Button";
+import { supabase } from "../lib/supabase";
 
 const Login = () => {
   const router = useRouter();
@@ -18,10 +19,24 @@ const Login = () => {
 
   const onSubmit = async () => {
     if (!emailRef.current || !passwordRef.current) {
-      Alert.alert("Login", "fill all the fields");
+      Alert.alert("Login", "Fill all the fields");
       return;
     }
+    const email = emailRef.current.trim();
+    const password = passwordRef.current.trim();
+    setLoading(true);
+    const { error } = await supabase.auth.signInWithPassword({
+      email,
+      password,
+    });
+
+    setLoading(false);
+
+    if (error) {
+      Alert.alert("Login", error.message);
+    }
   };
+
   return (
     <ScreenWrapper>
       <StatusBar style="dark" />
@@ -51,7 +66,7 @@ const Login = () => {
           />
           <Text style={styles.forgetPassword}>Forget Password?</Text>
 
-          {/* button */}
+          {/* Button */}
           <Button
             title="Login"
             loading={loading}
@@ -60,7 +75,7 @@ const Login = () => {
           />
         </View>
 
-        {/* footer */}
+        {/* Footer */}
         <View style={styles.footer}>
           <Text style={styles.footerText}>Don't have an account?</Text>
           <Pressable onPress={() => router.push("signUp")}>
@@ -73,6 +88,7 @@ const Login = () => {
 };
 
 export default Login;
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,

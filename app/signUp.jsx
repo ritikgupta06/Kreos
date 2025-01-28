@@ -9,19 +9,65 @@ import { hp, wp } from "../helper/common";
 
 import Input from "../components/input";
 import Button from "../components/Button";
+import { supabase } from "../lib/supabase";
 
 const SignUp = () => {
   const router = useRouter();
-  const emailRef = useRef();
-  const passwordRef = useRef();
+  const emailRef = useRef("");
+  const nameRef = useRef("");
+  const passwordRef = useRef("");
   const [loading, setLoading] = useState(false);
 
   const onSubmit = async () => {
-    if (!emailRef.current || !passwordRef.current) {
-      Alert.alert("Login", "fill all the fields");
+    const name = nameRef.current.trim();
+    const email = emailRef.current.trim();
+    const password = passwordRef.current.trim();
+
+    // Validate inputs
+    if (!name) {
+      Alert.alert("SignUp", "Name is required");
       return;
     }
+    if (!email || !/\S+@\S+\.\S+/.test(email)) {
+      Alert.alert("SignUp", "A valid email is required");
+      return;
+    }
+    if (!password || password.length < 6) {
+      Alert.alert("SignUp", "Password must be at least 6 characters long");
+      return;
+    }
+
+    setLoading(true);
+
+    try {
+      const { data, error } = await supabase.auth.signUp({
+        email,
+        password,
+      });
+
+      setLoading(false);
+
+      if (error) {
+        console.error("Supabase Error:", error.message);
+        Alert.alert("SignUp Error", error.message);
+        return;
+      }
+
+      Alert.alert(
+        "SignUp Successful",
+        "Please check your email to confirm your account"
+      );
+      router.push("login");
+    } catch (err) {
+      setLoading(false);
+      console.error("Unexpected Error:", err);
+      Alert.alert(
+        "SignUp Error",
+        "Something went wrong. Please try again later."
+      );
+    }
   };
+
   return (
     <ScreenWrapper>
       <StatusBar style="dark" />
@@ -31,13 +77,19 @@ const SignUp = () => {
 
         {/* Welcome Text */}
         <View>
-          <Text style={styles.welcomeText}>Hey,</Text>
-          <Text style={styles.welcomeText}>Welcome </Text>
+          <Text style={styles.welcomeText}>Let's,</Text>
+          <Text style={styles.welcomeText}>Get Started</Text>
         </View>
 
         {/* Form */}
         <View style={styles.form}>
           <Text style={styles.formLabel}>Please SignUp to continue</Text>
+
+          <Input
+            icon={<Icon name="user" size={26} strokeWidth={1.6} />}
+            placeholder="Enter your Username"
+            onChangeText={(value) => (nameRef.current = value)}
+          />
           <Input
             icon={<Icon name="mail" size={26} strokeWidth={1.6} />}
             placeholder="Enter your email"
@@ -53,18 +105,18 @@ const SignUp = () => {
 
           {/* button */}
           <Button
-            title="Login"
+            title="SignUp"
             loading={loading}
             onPress={onSubmit}
             titleStyle={{ color: "#ffffff" }}
           />
         </View>
 
-        {/* footer */}
+        {/* Footer */}
         <View style={styles.footer}>
-          <Text style={styles.footerText}>Don't have an account?</Text>
-          <Pressable onPress={() => router.push("SignUp")}>
-            <Text style={styles.footerLink}>Sign Up</Text>
+          <Text style={styles.footerText}>Already have an account? </Text>
+          <Pressable onPress={() => router.push("login")}>
+            <Text style={styles.footerLink}>Login</Text>
           </Pressable>
         </View>
       </View>
@@ -73,6 +125,7 @@ const SignUp = () => {
 };
 
 export default SignUp;
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -127,19 +180,19 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
   },
   footer: {
-    flexDirection: "row", // Align Text and Pressable horizontally
-    justifyContent: "center", // Center the content
-    alignItems: "center", // Align items vertically
-    marginTop: hp(3), // Add some spacing from the form/button
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: hp(3),
   },
   footerText: {
-    fontSize: hp(2), // Consistent font size
-    color: "#7a7a7a", // Subtle gray color for the text
+    fontSize: hp(2),
+    color: "#7a7a7a",
   },
   footerLink: {
-    fontSize: hp(2), // Same size as footerText for consistency
-    color: "#4CAF50", // Green color for the link
-    fontWeight: "600", // Slightly bold for emphasis
-    marginLeft: wp(1), // Add space between "Don't have an account?" and "Sign Up"
+    fontSize: hp(2),
+    color: "#4CAF50",
+    fontWeight: "600",
+    marginLeft: wp(1),
   },
 });
