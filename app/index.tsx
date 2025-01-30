@@ -1,4 +1,4 @@
-import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
+import { View, Text, Pressable, StyleSheet } from "react-native";
 import React from "react";
 import { useRouter } from "expo-router";
 import ScreenWrapper from "../components/ScreenWrapper";
@@ -9,12 +9,16 @@ const Index = () => {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Home Page</Text>
-      <TouchableOpacity
-        style={styles.button}
+      <Pressable
+        style={({ pressed }) => [
+          styles.button,
+          { backgroundColor: pressed ? "#45a049" : "#4CAF50" }, // Change color on press
+        ]}
         onPress={() => router.push("/welcome")}
       >
+        {/* Wrapping button text with Text component */}
         <Text style={styles.buttonText}>Go to Welcome Page</Text>
-      </TouchableOpacity>
+      </Pressable>
     </View>
   );
 };
@@ -34,7 +38,6 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
   },
   button: {
-    backgroundColor: "#4CAF50",
     paddingVertical: 10,
     paddingHorizontal: 20,
     borderRadius: 8,

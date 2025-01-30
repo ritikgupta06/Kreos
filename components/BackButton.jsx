@@ -1,8 +1,11 @@
-import { Pressable, StyleSheet, Text, View } from "react-native";
+import { Pressable, StyleSheet } from "react-native";
 import React from "react";
 import Icon from "../assets/icons";
+import { useRouter } from "expo-router"; // Assuming you're using expo-router
 
-const BackButton = ({ size = 26, router }) => {
+const BackButton = ({ size = 26 }) => {
+  const router = useRouter(); // Using useRouter here
+
   return (
     <Pressable onPress={() => router.back()} style={styles.button}>
       <Icon name="arrowLeft" strokeWidth={2.5} size={size} color="green" />

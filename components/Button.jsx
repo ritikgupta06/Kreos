@@ -18,23 +18,23 @@ const Button = ({
     shadowRadius: 6,
     elevation: 5, // For Android shadow
   };
+
   if (loading) {
-    return [
+    return (
       <View
         style={[styles.button, buttonStyle, { backgroundColor: "#f5f5f5" }]}
       >
         <Loading />
-      </View>,
-    ];
+      </View>
+    );
   }
 
   return (
     <Pressable
       onPress={onPress}
-      style={[styles.button, buttonStyle, shadowStyle]} // Merged styles
+      style={[styles.button, buttonStyle, shadowStyle]}
     >
-      <Text style={[styles.text, textStyle]}>{title}</Text>{" "}
-      {/* Merged text styles */}
+      <Text style={[styles.text, textStyle]}>{title}</Text> {/* Cleaned up */}
     </Pressable>
   );
 };
@@ -52,7 +52,7 @@ const styles = StyleSheet.create({
   },
   text: {
     fontSize: 18,
-    color: "black", // Text color
+    color: "black",
     fontWeight: "bold",
   },
 });

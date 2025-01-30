@@ -1,5 +1,5 @@
 import { Alert, Pressable, StyleSheet, Text, View } from "react-native";
-import React, { useRef, useState } from "react";
+import React, { useState } from "react";
 import ScreenWrapper from "../components/ScreenWrapper";
 import Icon from "../assets/icons";
 import { StatusBar } from "expo-status-bar";
@@ -13,16 +13,12 @@ import { supabase } from "../lib/supabase";
 
 const SignUp = () => {
   const router = useRouter();
-  const emailRef = useRef("");
-  const nameRef = useRef("");
-  const passwordRef = useRef("");
+  const [email, setEmail] = useState("");
+  const [name, setName] = useState("");
+  const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
 
   const onSubmit = async () => {
-    const name = nameRef.current.trim();
-    const email = emailRef.current.trim();
-    const password = passwordRef.current.trim();
-
     // Validate inputs
     if (!name) {
       Alert.alert("SignUp", "Name is required");
@@ -88,18 +84,21 @@ const SignUp = () => {
           <Input
             icon={<Icon name="user" size={26} strokeWidth={1.6} />}
             placeholder="Enter your Username"
-            onChangeText={(value) => (nameRef.current = value)}
+            value={name}
+            onChangeText={setName}
           />
           <Input
             icon={<Icon name="mail" size={26} strokeWidth={1.6} />}
             placeholder="Enter your email"
-            onChangeText={(value) => (emailRef.current = value)}
+            value={email}
+            onChangeText={setEmail}
           />
           <Input
             icon={<Icon name="lock" size={26} strokeWidth={1.6} />}
             placeholder="Enter your password"
             secureTextEntry
-            onChangeText={(value) => (passwordRef.current = value)}
+            value={password}
+            onChangeText={setPassword}
           />
           <Text style={styles.forgetPassword}>Forget Password?</Text>
 
@@ -148,36 +147,12 @@ const styles = StyleSheet.create({
     marginBottom: hp(3),
     textAlign: "center",
   },
-  input: {
-    flexDirection: "row",
-    alignItems: "center",
-    borderWidth: 1,
-    borderColor: "#e0e0e0",
-    borderRadius: 8,
-    paddingHorizontal: wp(4),
-    paddingVertical: hp(1.5),
-    fontSize: hp(2),
-    backgroundColor: "#ffffff",
-    marginBottom: hp(2),
-  },
   forgetPassword: {
     alignSelf: "flex-end",
     fontSize: hp(1.8),
     color: "#4CAF50",
     fontWeight: "600",
     marginBottom: hp(4),
-  },
-  button: {
-    backgroundColor: "#4CAF50",
-    borderRadius: 8,
-    alignItems: "center",
-    justifyContent: "center",
-    height: hp(6),
-  },
-  buttonText: {
-    color: "#ffffff",
-    fontSize: hp(2.2),
-    fontWeight: "bold",
   },
   footer: {
     flexDirection: "row",

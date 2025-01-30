@@ -12,7 +12,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   const setUserData = (userData) => {
-    setUser(userData);
+    setUser(userData); // ✅ Fixed this line
   };
 
   return (

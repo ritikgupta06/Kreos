@@ -3,7 +3,7 @@ import { View, Text, StyleSheet, Image, Pressable } from "react-native";
 import ScreenWrapper from "../components/ScreenWrapper";
 import { StatusBar } from "expo-status-bar";
 import { wp, hp } from "../helper/common";
-import Button from "../components/Button"; // Ensure Button component is imported
+import Button from "../components/Button";
 import { useRouter } from "expo-router";
 
 const Welcome = () => {
@@ -79,12 +79,12 @@ const styles = StyleSheet.create({
   },
   footer: {
     gap: 10,
-    position: "absolute", // Positions footer over the content
-    bottom: 0, // Anchors the footer to the bottom of the screen
-    width: "100%", // Ensures the footer takes up the full width
+    position: "absolute",
+    bottom: 0,
+    width: "100%",
     paddingBottom: hp(10),
-    alignItems: "center", // Center button horizontally
-    backgroundColor: "#f5f5f5", // Set background to white if required
+    alignItems: "center",
+    backgroundColor: "#f5f5f5",
     paddingHorizontal: wp(5),
   },
   bottomTextContainer: {
@@ -94,6 +94,5 @@ const styles = StyleSheet.create({
   },
   loginText: {
     textAlign: "center",
-    alignItems: "center",
   },
 });
